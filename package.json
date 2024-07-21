@@ -9,15 +9,22 @@
     "node": "18.x"
   },
   "dependencies": {
+    "@google/model-viewer": "^3.5.0",
+    "aframe": "^1.6.0",
+    "ar.js": "^2.2.2",
     "core-js": "^3.30.2",
-    "vue": "^3.3.4"
+    "googlemaps": "^1.12.0",
+    "mapbox-gl": "^3.5.2",
+    "three": "^0.166.1",
+    "vue": "^3.3.4",
+    "webxr-polyfill": "^2.0.3"
   },
   "devDependencies": {
+    "@babel/eslint-parser": "^7.21.8",
     "@vue/cli-plugin-babel": "~5.0.8",
     "@vue/cli-plugin-eslint": "~5.0.8",
     "@vue/cli-service": "~5.0.8",
     "@vue/compiler-sfc": "^3.3.4",
-    "@babel/eslint-parser": "^7.21.8",
     "eslint": "^8.4.1",
     "eslint-plugin-vue": "^9.14.0"
   },
