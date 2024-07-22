@@ -1,20 +1,18 @@
 <template>
   <div class="locationAR">
-    <p>{{ range }}</p>
-    <!-- <button @click="startAR">StartAR</button> -->
+    <h3>{{ range }}</h3>
     <a-scene
       vr-mode-ui="enabled: false"
       embedded
       arjs="sourceType: webcam; locationOnly: true; debugUIEnabled: false;"
     >
       <a-camera gps-camera rotation-reader></a-camera>
-      <a-text
-        :value="dynamicText"
-        :gps-entity-place="`latitude: ${userPosition.latitude}; longitude: ${userPosition.longitude};`"
-        position="0 2 0"
-        scale="5 5 5"
-        color="red"
-      ></a-text>
+      <a-entity
+        :position="modelPosition"
+        :visible="isWithinRange"
+        gltf-model="https://github.com/Darthviciouz/location-based-ar-tutorial/tree/master/assets/magnemite/scene.gltf"
+        scale="2 2 2"
+      ></a-entity>
     </a-scene>
   </div>
 </template>
@@ -31,8 +29,9 @@ export default defineComponent({
       latitude: 0,
       longitude: 0,
       modelContent: null,
-      dynamicText: "Hello AR",
-      range: "Hello",
+      range: "Hello AR",
+      isWithinRange: false,
+      modelPosition: "0 0 -5",
     };
   },
   mounted() {
@@ -73,11 +72,12 @@ export default defineComponent({
       );
       if (distance <= this.threshold) {
         this.range = "You are within the target range.";
-        console.log("You are within the target range.");
-        this.startAR();
+        this.isWithinRange = true;
+
+        // this.startAR();
       } else {
         this.range = "You are outside the target range.";
-        console.log("You are outside the target range.");
+        this.isWithinRange = false;
       }
     },
     calculateDistance(lat1, lon1, lat2, lon2) {
@@ -95,46 +95,52 @@ export default defineComponent({
       const d = R * c;
       return d;
     },
-    loadPlaces() {
-      return [
-        {
-          name: "map-pin",
-          location: {
-            lat: this.latitude,
-            lng: this.longitude,
-          },
-        },
-      ];
+    updateModelPosition() {
+      this.modelPosition = "0 0 -5";
     },
-    renderPlaces(places) {
-      let scene = document.querySelector("a-scene");
-      places.forEach((place) => {
-        let latitude = place.location.lat;
-        let longitude = place.location.lng;
+    // loadPlaces() {
+    //   return [
+    //     {
+    //       name: "map-pin",
+    //       location: {
+    //         lat: this.latitude,
+    //         lng: this.longitude,
+    //       },
+    //     },
+    //   ];
+    // },
+    // renderPlaces(places) {
+    //   let scene = document.querySelector("a-scene");
+    //   places.forEach((place) => {
+    //     let latitude = place.location.lat;
+    //     let longitude = place.location.lng;
 
-        let model = document.createElement("a-entity");
+    //     let model = document.createElement("a-entity");
 
-        model.setAttribute(
-          "gps-entity-place",
-          `latitude: ${latitude}; longitude: ${longitude};`
-        );
-        model.setAttribute("gltf-model", "./assets/map-pin.glb");
-        model.setAttribute("rotation", "0 180 0");
-        model.setAttribute("animation-mixer", "");
-        model.setAttribute("scale", "2 2 2");
+    //     model.setAttribute(
+    //       "gps-entity-place",
+    //       `latitude: ${latitude}; longitude: ${longitude};`
+    //     );
+    //     model.setAttribute(
+    //       "gltf-model",
+    //       "https://github.com/Darthviciouz/location-based-ar-tutorial/tree/master/assets/magnemite/scene.gltf"
+    //     );
+    //     model.setAttribute("rotation", "0 180 0");
+    //     model.setAttribute("animation-mixer", "");
+    //     model.setAttribute("scale", "2 2 2");
 
-        model.addEventListener("loaded", () => {
-          console.log("Model loaded successfully");
-          window.dispatchEvent(new CustomEvent("gps-entity-place-loaded"));
-        });
+    //     model.addEventListener("loaded", () => {
+    //       console.log("Model loaded successfully");
+    //       window.dispatchEvent(new CustomEvent("gps-entity-place-loaded"));
+    //     });
 
-        scene.appendChild(model);
-      });
-    },
-    startAR() {
-      let places = this.loadPlaces();
-      this.renderPlaces(places);
-    },
+    //     scene.appendChild(model);
+    //   });
+    // },
+    // startAR() {
+    //   let places = this.loadPlaces();
+    //   this.renderPlaces(places);
+    // },
   },
 });
 </script>
