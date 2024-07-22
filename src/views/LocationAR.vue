@@ -52,7 +52,7 @@ export default defineComponent({
         this.longitude
       );
       if (distance <= this.threshold) {
-        alert("You are within the target range.");
+        // alert("You are within the target range.");
         this.startAR();
       }
     },
