@@ -12,10 +12,11 @@
       <a-entity
         id="model"
         :position="modelPosition"
-        :visible="isWithinRange"
-        gltf-model="https://github.com/Darthviciouz/location-based-ar-tutorial/tree/master/assets/magnemite/scene.gltf"
+        gltf-model="./assets/map-pin.glb"
         scale="2 2 2"
+        visible="true"
       ></a-entity>
+      <!-- :visible="isWithinRange" -->
     </a-scene>
   </div>
 </template>
@@ -34,7 +35,7 @@ export default defineComponent({
       modelContent: null,
       range: "Hello AR",
       isWithinRange: false,
-      modelPosition: "0 0 -5",
+      modelPosition: "0 0 5",
       cameraPosition: "0 0 0",
       updateInterval: 50,
     };
@@ -112,7 +113,7 @@ export default defineComponent({
           2
         )} ${cameraPosition.y.toFixed(2)} ${cameraPosition.z.toFixed(2)}`;
         this.modelPosition = `${cameraPosition.x} ${cameraPosition.y} ${
-          cameraPosition.z - 5
+          cameraPosition.z + 5
         }`;
       }
     },
