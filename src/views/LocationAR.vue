@@ -55,10 +55,7 @@ export default defineComponent({
           "gps-entity-place",
           `latitude: ${latitude}; longitude: ${longitude};`
         );
-        model.setAttribute(
-          "gltf-model",
-          "https://dl.dropboxusercontent.com/s/dvahjq5trg9pysj/evil-skull.gltf"
-        );
+        model.setAttribute("gltf-model", "./assets/map-pin.glb");
         model.setAttribute("rotation", "0 180 0");
         model.setAttribute("animation-mixer", "");
         model.setAttribute("scale", "2 2 2");
