@@ -41,7 +41,7 @@ export default defineComponent({
           (position) => {
             this.userPosition.latitude = position.coords.latitude;
             this.userPosition.longitude = position.coords.longitude;
-            this.checkProximity();
+            if (this.latitude && this.longitude) this.checkProximity();
           },
           (error) => {
             console.error("Error getting position:", error);
@@ -112,7 +112,7 @@ export default defineComponent({
         model.setAttribute("scale", "2 2 2");
 
         model.addEventListener("loaded", () => {
-          alert("Model loaded successfully");
+          console.log("Model loaded successfully");
           window.dispatchEvent(new CustomEvent("gps-entity-place-loaded"));
         });
 
