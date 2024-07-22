@@ -1,6 +1,6 @@
 <template>
   <div class="locationAR">
-    <button @click="startAR">StartAR</button>
+    <!-- <button @click="startAR">StartAR</button> -->
     <a-scene
       vr-mode-ui="enabled: false"
       embedded
@@ -18,6 +18,8 @@ export default defineComponent({
   components: {},
   data() {
     return {
+      userPosition: { latitude: null, longitude: null },
+      threshold: 0.01,
       latitude: 0,
       longitude: 0,
       modelContent: null,
@@ -25,12 +27,49 @@ export default defineComponent({
   },
   mounted() {
     this.extractDatafromUrl();
+    this.watchUserPosition();
   },
   methods: {
     extractDatafromUrl() {
       this.latitude = this.$store.getters.mapLatitude;
       this.longitude = this.$store.getters.mapLongitude;
       this.modelContent = this.$store.getters.placedModelFile;
+    },
+    watchUserPosition() {
+      if (navigator.geolocation) {
+        navigator.geolocation.watchPosition((position) => {
+          this.userPosition.latitude = position.coords.latitude;
+          this.userPosition.longitude = position.coords.longitude;
+          this.checkProximity();
+        });
+      }
+    },
+    checkProximity() {
+      const distance = this.calculateDistance(
+        this.userPosition.latitude,
+        this.userPosition.longitude,
+        this.latitude,
+        this.longitude
+      );
+      if (distance <= this.threshold) {
+        alert("You are within the target range.");
+        this.startAR();
+      }
+    },
+    calculateDistance(lat1, lon1, lat2, lon2) {
+      const toRad = (value) => (value * Math.PI) / 180;
+      const R = 6371;
+      const dLat = toRad(lat2 - lat1);
+      const dLon = toRad(lon2 - lon1);
+      const a =
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(toRad(lat1)) *
+          Math.cos(toRad(lat2)) *
+          Math.sin(dLon / 2) *
+          Math.sin(dLon / 2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      const d = R * c;
+      return d;
     },
     loadPlaces() {
       return [
