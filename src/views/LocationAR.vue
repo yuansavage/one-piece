@@ -1,12 +1,13 @@
 <template>
   <div class="locationAR">
     <h3>{{ range }}</h3>
+    <h4>Camera Position: {{ cameraPosition }}</h4>
     <a-scene
       vr-mode-ui="enabled: false"
       embedded
       arjs="sourceType: webcam; locationOnly: true; debugUIEnabled: false;"
     >
-      <a-camera gps-camera rotation-reader></a-camera>
+      <a-camera id="camera" gps-camera rotation-reader></a-camera>
       <a-entity
         :position="modelPosition"
         :visible="isWithinRange"
@@ -32,11 +33,14 @@ export default defineComponent({
       range: "Hello AR",
       isWithinRange: false,
       modelPosition: "0 0 -5",
+      cameraPosition: "0 0 0",
+      updateInterval: 1000,
     };
   },
   mounted() {
     this.extractDatafromUrl();
     this.watchUserPosition();
+    this.startCameraPositionUpdate();
   },
   methods: {
     extractDatafromUrl() {
@@ -73,6 +77,7 @@ export default defineComponent({
       if (distance <= this.threshold) {
         this.range = "You are within the target range.";
         this.isWithinRange = true;
+        this.updateModelPosition();
 
         // this.startAR();
       } else {
@@ -96,7 +101,25 @@ export default defineComponent({
       return d;
     },
     updateModelPosition() {
-      this.modelPosition = "0 0 -5";
+      const camera = document.querySelector("#camera");
+
+      if (camera) {
+        const cameraPosition = camera.getAttribute("position");
+        this.cameraPosition = `${cameraPosition.x.toFixed(
+          2
+        )} ${cameraPosition.y.toFixed(2)} ${cameraPosition.z.toFixed(2)}`;
+        this.modelPosition = `${cameraPosition.x} ${cameraPosition.y} ${
+          cameraPosition.z - 5
+        }`;
+      }
+    },
+    startCameraPositionUpdate() {
+      this.cameraPositionInterval = setInterval(() => {
+        this.updateModelPosition();
+      }, this.updateInterval);
+    },
+    stopCameraPositionUpdate() {
+      clearInterval(this.cameraPositionInterval);
     },
     // loadPlaces() {
     //   return [
@@ -141,6 +164,9 @@ export default defineComponent({
     //   let places = this.loadPlaces();
     //   this.renderPlaces(places);
     // },
+  },
+  destroy() {
+    this.stopCameraPositionUpdate();
   },
 });
 </script>
