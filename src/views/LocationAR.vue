@@ -4,9 +4,15 @@
     <a-scene
       vr-mode-ui="enabled: false"
       embedded
-      arjs="sourceType: webcam; sourceWidth:1280; sourceHeight:960; displayWidth: 1280; displayHeight: 960; debugUIEnabled: false;"
+      arjs="sourceType: webcam; locationOnly: true; debugUIEnabled: false;"
     >
-      <a-camera gps-camera="minDistance: 40;" rotation-reader></a-camera>
+      <a-entity
+        :gps-entity-place="`latitude: ${latitude}; longitude: ${longitude};`"
+        gltf-model="./assets/map-pin.glb"
+        scale="5 5 5"
+        id="targetEntity"
+      ></a-entity>
+      <a-camera gps-camera rotation-reader></a-camera>
     </a-scene>
   </div>
 </template>
@@ -52,8 +58,8 @@ export default defineComponent({
         this.longitude
       );
       if (distance <= this.threshold) {
-        // alert("You are within the target range.");
-        this.startAR();
+        alert("You are within the target range.");
+        // this.startAR();
       }
     },
     calculateDistance(lat1, lon1, lat2, lon2) {
