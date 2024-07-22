@@ -35,7 +35,7 @@ export default defineComponent({
     loadPlaces() {
       return [
         {
-          name: "Magnemite",
+          name: "map-pin",
           location: {
             lat: this.latitude,
             lng: this.longitude,
@@ -50,14 +50,18 @@ export default defineComponent({
         let longitude = place.location.lng;
 
         let model = document.createElement("a-entity");
+
         model.setAttribute(
           "gps-entity-place",
           `latitude: ${latitude}; longitude: ${longitude};`
         );
-        model.setAttribute("gltf-model", "./assets/magnemite/scene.gltf");
+        model.setAttribute(
+          "gltf-model",
+          "https://dl.dropboxusercontent.com/s/dvahjq5trg9pysj/evil-skull.gltf"
+        );
         model.setAttribute("rotation", "0 180 0");
         model.setAttribute("animation-mixer", "");
-        model.setAttribute("scale", "0.5 0.5 0.5");
+        model.setAttribute("scale", "2 2 2");
 
         model.addEventListener("loaded", () => {
           window.dispatchEvent(new CustomEvent("gps-entity-place-loaded"));
