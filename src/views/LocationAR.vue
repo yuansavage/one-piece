@@ -6,12 +6,6 @@
       embedded
       arjs="sourceType: webcam; locationOnly: true; debugUIEnabled: false;"
     >
-      <a-entity
-        :gps-entity-place="`latitude: ${latitude}; longitude: ${longitude};`"
-        gltf-model="./assets/map-pin.glb"
-        scale="5 5 5"
-        id="targetEntity"
-      ></a-entity>
       <a-camera gps-camera rotation-reader></a-camera>
     </a-scene>
   </div>
@@ -43,11 +37,21 @@ export default defineComponent({
     },
     watchUserPosition() {
       if (navigator.geolocation) {
-        navigator.geolocation.watchPosition((position) => {
-          this.userPosition.latitude = position.coords.latitude;
-          this.userPosition.longitude = position.coords.longitude;
-          this.checkProximity();
-        });
+        navigator.geolocation.watchPosition(
+          (position) => {
+            this.userPosition.latitude = position.coords.latitude;
+            this.userPosition.longitude = position.coords.longitude;
+            this.checkProximity();
+          },
+          (error) => {
+            console.error("Error getting position:", error);
+          },
+          {
+            enableHighAccuracy: true,
+            maximumAge: 0,
+            timeout: 27000,
+          }
+        );
       }
     },
     checkProximity() {
@@ -58,8 +62,10 @@ export default defineComponent({
         this.longitude
       );
       if (distance <= this.threshold) {
-        // alert("You are within the target range.");
-        // this.startAR();
+        console.log("You are within the target range.");
+        this.startAR();
+      } else {
+        console.log("You are outside the target range.");
       }
     },
     calculateDistance(lat1, lon1, lat2, lon2) {
@@ -106,6 +112,7 @@ export default defineComponent({
         model.setAttribute("scale", "2 2 2");
 
         model.addEventListener("loaded", () => {
+          alert("Model loaded successfully");
           window.dispatchEvent(new CustomEvent("gps-entity-place-loaded"));
         });
 
