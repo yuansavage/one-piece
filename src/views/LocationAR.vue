@@ -1,5 +1,6 @@
 <template>
   <div class="locationAR">
+    <button @click="startAR">StartAR</button>
     <a-scene
       vr-mode-ui="enabled: false"
       embedded
@@ -12,7 +13,6 @@
 
 <script>
 import { defineComponent } from "vue";
-import "aframe";
 export default defineComponent({
   name: "LocationAR",
   components: {},
@@ -31,6 +31,44 @@ export default defineComponent({
       this.latitude = this.$store.getters.mapLatitude;
       this.longitude = this.$store.getters.mapLongitude;
       this.modelContent = this.$store.getters.placedModelFile;
+    },
+    loadPlaces() {
+      return [
+        {
+          name: "Magnemite",
+          location: {
+            lat: this.latitude,
+            lng: this.longitude,
+          },
+        },
+      ];
+    },
+    renderPlaces(places) {
+      let scene = document.querySelector("a-scene");
+      places.forEach((place) => {
+        let latitude = place.location.lat;
+        let longitude = place.location.lng;
+
+        let model = document.createElement("a-entity");
+        model.setAttribute(
+          "gps-entity-place",
+          `latitude: ${latitude}; longitude: ${longitude};`
+        );
+        model.setAttribute("gltf-model", "./assets/magnemite/scene.gltf");
+        model.setAttribute("rotation", "0 180 0");
+        model.setAttribute("animation-mixer", "");
+        model.setAttribute("scale", "0.5 0.5 0.5");
+
+        model.addEventListener("loaded", () => {
+          window.dispatchEvent(new CustomEvent("gps-entity-place-loaded"));
+        });
+
+        scene.appendChild(model);
+      });
+    },
+    startAR() {
+      let places = this.loadPlaces();
+      this.renderPlaces(places);
     },
   },
 });
