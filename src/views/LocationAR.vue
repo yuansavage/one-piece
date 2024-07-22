@@ -1,5 +1,6 @@
 <template>
   <div class="locationAR">
+    <p>{{ range }}</p>
     <!-- <button @click="startAR">StartAR</button> -->
     <a-scene
       vr-mode-ui="enabled: false"
@@ -7,6 +8,13 @@
       arjs="sourceType: webcam; locationOnly: true; debugUIEnabled: false;"
     >
       <a-camera gps-camera rotation-reader></a-camera>
+      <a-text
+        :value="dynamicText"
+        :gps-entity-place="`latitude: ${userPosition.latitude}; longitude: ${userPosition.longitude};`"
+        position="0 2 0"
+        scale="5 5 5"
+        color="red"
+      ></a-text>
     </a-scene>
   </div>
 </template>
@@ -23,6 +31,8 @@ export default defineComponent({
       latitude: 0,
       longitude: 0,
       modelContent: null,
+      dynamicText: "Hello AR",
+      range: "Hello",
     };
   },
   mounted() {
@@ -62,9 +72,11 @@ export default defineComponent({
         this.longitude
       );
       if (distance <= this.threshold) {
+        this.range = "You are within the target range.";
         console.log("You are within the target range.");
         this.startAR();
       } else {
+        this.range = "You are outside the target range.";
         console.log("You are outside the target range.");
       }
     },
