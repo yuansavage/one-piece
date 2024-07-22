@@ -2,6 +2,7 @@
   <div class="locationAR">
     <h3>{{ range }}</h3>
     <h4>Camera Position: {{ cameraPosition }}</h4>
+    <h4>Model Position: {{ modelPosition }}</h4>
     <a-scene
       vr-mode-ui="enabled: false"
       embedded
@@ -9,6 +10,7 @@
     >
       <a-camera id="camera" gps-camera rotation-reader></a-camera>
       <a-entity
+        id="model"
         :position="modelPosition"
         :visible="isWithinRange"
         gltf-model="https://github.com/Darthviciouz/location-based-ar-tutorial/tree/master/assets/magnemite/scene.gltf"
@@ -34,7 +36,7 @@ export default defineComponent({
       isWithinRange: false,
       modelPosition: "0 0 -5",
       cameraPosition: "0 0 0",
-      updateInterval: 1000,
+      updateInterval: 50,
     };
   },
   mounted() {
@@ -102,8 +104,9 @@ export default defineComponent({
     },
     updateModelPosition() {
       const camera = document.querySelector("#camera");
+      const model = document.querySelector("#model");
 
-      if (camera) {
+      if (camera && model) {
         const cameraPosition = camera.getAttribute("position");
         this.cameraPosition = `${cameraPosition.x.toFixed(
           2
