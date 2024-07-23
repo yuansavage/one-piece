@@ -8,20 +8,20 @@
       embedded
       arjs="sourceType: webcam; locationOnly: true; debugUIEnabled: false;"
     >
-      <!-- <a-entity
+      <a-entity
         id="model"
         :position="modelPosition"
         gltf-model="./assets/map-pin.glb"
         scale="2 2 2"
-        :visible="isWithinRange"
-      ></a-entity> -->
+        visible="true"
+      ></a-entity>
       <!-- :visible="isWithinRange" -->
-      <a-text
+      <!-- <a-text
         value="This content will always face you."
         look-at="[gps-camera]"
         scale="50 50 50"
         :gps-entity-place="`latitude: ${latitude}; longitude: ${longitude};`"
-      ></a-text>
+      ></a-text> -->
       <a-camera id="camera" gps-camera rotation-reader></a-camera>
     </a-scene>
   </div>
@@ -180,10 +180,9 @@ export default defineComponent({
   },
 });
 </script>
-<style>
-#locationAR {
+<style scoped>
+a-scene {
   height: 100vh;
-  margin: 0;
-  overflow: hidden;
+  width: 100vw;
 }
 </style>
