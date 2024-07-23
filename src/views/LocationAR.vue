@@ -3,7 +3,7 @@
     <h3>{{ range }}</h3>
     <h4>Camera Position: {{ cameraPosition }}</h4>
     <h4>Model Position: {{ modelPosition }}</h4>
-    <a-scene
+    <!-- <a-scene
       vr-mode-ui="enabled: false"
       embedded
       arjs="sourceType: webcam; locationOnly: true; debugUIEnabled: false;"
@@ -13,16 +13,18 @@
         :position="modelPosition"
         gltf-model="./assets/map-pin.glb"
         scale="2 2 2"
-        visible="true"
+        :visible="isWithinRange"
       ></a-entity>
-      <!-- :visible="isWithinRange" -->
-      <!-- <a-text
-        value="This content will always face you."
-        look-at="[gps-camera]"
-        scale="50 50 50"
-        :gps-entity-place="`latitude: ${latitude}; longitude: ${longitude};`"
-      ></a-text> -->
       <a-camera id="camera" gps-camera rotation-reader></a-camera>
+    </a-scene> -->
+    <a-scene ar>
+      <a-entity
+        id="model"
+        position="0 0 -1"
+        gltf-model="./assets/map-pin.glb"
+        scale="0.5 0.5 0.5"
+        :visible="isWithinRange"
+      ></a-entity>
     </a-scene>
   </div>
 </template>
