@@ -8,7 +8,6 @@
       embedded
       arjs="sourceType: webcam; locationOnly: true; debugUIEnabled: false;"
     >
-      <a-camera id="camera" gps-camera rotation-reader></a-camera>
       <a-entity
         id="model"
         :position="modelPosition"
@@ -17,6 +16,7 @@
         visible="true"
       ></a-entity>
       <!-- :visible="isWithinRange" -->
+      <a-camera id="camera" gps-camera rotation-reader></a-camera>
     </a-scene>
   </div>
 </template>
@@ -174,3 +174,10 @@ export default defineComponent({
   },
 });
 </script>
+<style>
+#locationAR {
+  height: 100vh;
+  margin: 0;
+  overflow: hidden;
+}
+</style>
