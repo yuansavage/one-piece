@@ -1,27 +1,12 @@
 <template>
   <div class="locationAR">
     <h3>{{ range }}</h3>
-    <h4>Camera Position: {{ cameraPosition }}</h4>
-    <h4>Model Position: {{ modelPosition }}</h4>
-    <!-- <a-scene
-      vr-mode-ui="enabled: false"
-      embedded
-      arjs="sourceType: webcam; locationOnly: true; debugUIEnabled: false;"
-    >
+
+    <a-scene ar vr-mode-ui="enabled: false">
       <a-entity
         id="model"
-        :position="modelPosition"
-        gltf-model="./assets/map-pin.glb"
-        scale="2 2 2"
-        :visible="isWithinRange"
-      ></a-entity>
-      <a-camera id="camera" gps-camera rotation-reader></a-camera>
-    </a-scene> -->
-    <a-scene ar>
-      <a-entity
-        id="model"
-        position="0 0 -1"
-        gltf-model="./assets/map-pin.glb"
+        :gltf-model="`./assets/model/${modelName}`"
+        position="0 0 -4"
         scale="0.5 0.5 0.5"
         :visible="isWithinRange"
       ></a-entity>
@@ -41,23 +26,22 @@ export default defineComponent({
       latitude: 0,
       longitude: 0,
       modelContent: null,
+      modelName: "",
       range: "Hello AR",
       isWithinRange: false,
-      modelPosition: "0 0 5",
-      cameraPosition: "0 0 0",
-      updateInterval: 50,
     };
   },
   mounted() {
     this.extractDatafromUrl();
     this.watchUserPosition();
-    this.startCameraPositionUpdate();
   },
   methods: {
     extractDatafromUrl() {
       this.latitude = this.$store.getters.mapLatitude;
       this.longitude = this.$store.getters.mapLongitude;
       this.modelContent = this.$store.getters.placedModelFile;
+      this.modelName = this.$store.getters.placedModelName;
+      console.log("charles", this.modelName);
     },
     watchUserPosition() {
       if (navigator.geolocation) {
@@ -88,9 +72,6 @@ export default defineComponent({
       if (distance <= this.threshold) {
         this.range = "You are within the target range.";
         this.isWithinRange = true;
-        this.updateModelPosition();
-
-        // this.startAR();
       } else {
         this.range = "You are outside the target range.";
         this.isWithinRange = false;
@@ -111,74 +92,6 @@ export default defineComponent({
       const d = R * c;
       return d;
     },
-    updateModelPosition() {
-      const camera = document.querySelector("#camera");
-      const model = document.querySelector("#model");
-
-      if (camera && model) {
-        const cameraPosition = camera.getAttribute("position");
-        this.cameraPosition = `${cameraPosition.x.toFixed(
-          2
-        )} ${cameraPosition.y.toFixed(2)} ${cameraPosition.z.toFixed(2)}`;
-        this.modelPosition = `${cameraPosition.x} ${cameraPosition.y} ${
-          cameraPosition.z + 5
-        }`;
-      }
-    },
-    startCameraPositionUpdate() {
-      this.cameraPositionInterval = setInterval(() => {
-        this.updateModelPosition();
-      }, this.updateInterval);
-    },
-    stopCameraPositionUpdate() {
-      clearInterval(this.cameraPositionInterval);
-    },
-    // loadPlaces() {
-    //   return [
-    //     {
-    //       name: "map-pin",
-    //       location: {
-    //         lat: this.latitude,
-    //         lng: this.longitude,
-    //       },
-    //     },
-    //   ];
-    // },
-    // renderPlaces(places) {
-    //   let scene = document.querySelector("a-scene");
-    //   places.forEach((place) => {
-    //     let latitude = place.location.lat;
-    //     let longitude = place.location.lng;
-
-    //     let model = document.createElement("a-entity");
-
-    //     model.setAttribute(
-    //       "gps-entity-place",
-    //       `latitude: ${latitude}; longitude: ${longitude};`
-    //     );
-    //     model.setAttribute(
-    //       "gltf-model",
-    //       "https://github.com/Darthviciouz/location-based-ar-tutorial/tree/master/assets/magnemite/scene.gltf"
-    //     );
-    //     model.setAttribute("rotation", "0 180 0");
-    //     model.setAttribute("animation-mixer", "");
-    //     model.setAttribute("scale", "2 2 2");
-
-    //     model.addEventListener("loaded", () => {
-    //       console.log("Model loaded successfully");
-    //       window.dispatchEvent(new CustomEvent("gps-entity-place-loaded"));
-    //     });
-
-    //     scene.appendChild(model);
-    //   });
-    // },
-    // startAR() {
-    //   let places = this.loadPlaces();
-    //   this.renderPlaces(places);
-    // },
-  },
-  destroy() {
-    this.stopCameraPositionUpdate();
   },
 });
 </script>

@@ -1,7 +1,7 @@
 <template>
   <div id="editScene">
-    <MenuBar @submit="handleSubmit" @add="handleAdd" />
-    <MapView ref="mapComponent" :shouldAddLayer="shouldAddLayer" />
+    <MenuBar id="menuBar" @submit="handleSubmit" @add="handleAdd" />
+    <MapView id="mapView" ref="mapComponent" :shouldAddLayer="shouldAddLayer" />
   </div>
 </template>
 
@@ -58,5 +58,8 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
   height: 100vh;
+}
+#menuBar {
+  padding: 20px;
 }
 </style>

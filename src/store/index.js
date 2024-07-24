@@ -1,7 +1,7 @@
 import { createStore } from "vuex";
 
 export default createStore({
-  state: { longitude: 0, latitude: 0, modelFile: null },
+  state: { longitude: 0, latitude: 0, modelFile: null, modelName: "" },
   mutations: {
     setLongitude(state, playload) {
       state.longitude = playload;
@@ -11,6 +11,10 @@ export default createStore({
     },
     setModelFile(state, playload) {
       state.modelFile = playload;
+    },
+    setModelName(state, playload) {
+      console.log(playload);
+      state.modelName = playload;
     },
   },
   actions: {
@@ -23,6 +27,9 @@ export default createStore({
     fetchModelFile({ commit }, playload) {
       commit("setModelFile", playload);
     },
+    fetchModelName({ commit }, playload) {
+      commit("setModelName", playload);
+    },
   },
   getters: {
     mapLongitude(state) {
@@ -33,6 +40,9 @@ export default createStore({
     },
     placedModelFile(state) {
       return state.modelFile;
+    },
+    placedModelName(state) {
+      return state.modelName;
     },
   },
   modules: {},

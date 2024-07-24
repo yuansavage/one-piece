@@ -2,6 +2,12 @@ import { createRouter, createWebHistory } from "vue-router";
 
 const routes = [
   {
+    path: "/",
+    name: "MainView",
+    component: () =>
+      import(/* webpackChunkName: "about" */ "../views/MainView.vue"),
+  },
+  {
     path: "/editScene",
     name: "EditScene",
     component: () =>

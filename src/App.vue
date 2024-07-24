@@ -1,7 +1,7 @@
 <template>
   <div id="nav">
-    <router-link to="/editScene">MapView</router-link> |
-    <router-link to="/locationAR">LocationAR</router-link>
+    <router-link to="/editScene" class="tab">Place it !</router-link>
+    <router-link to="/locationAR" class="tab">Find it !</router-link>
   </div>
   <router-view />
 </template>
@@ -20,6 +20,23 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+}
+#nav {
+  padding: 30px;
+  background: linear-gradient(90deg, #4a90e2, #9013fe);
+}
+
+.tab {
+  padding: 10px 20px;
+  margin: 0 10px;
+  background-color: #42b983;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.tab:hover {
+  background-color: #3498db;
 }
 </style>
