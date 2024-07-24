@@ -6,9 +6,9 @@
       <a-entity
         id="model"
         :gltf-model="`./assets/model/${modelName}`"
-        position="0 2 -4"
+        position="0 1 -3"
         scale="0.5 0.5 0.5"
-        :visible="isWithinRange"
+        visible="true"
       ></a-entity>
     </a-scene>
   </div>
