@@ -20,9 +20,13 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  margin-top: -5px;
+  margin-left: -7px;
 }
 #nav {
   padding: 30px;
+  width: 100%;
+  margin-left: -30px;
   background: linear-gradient(90deg, #4a90e2, #9013fe);
 }
 

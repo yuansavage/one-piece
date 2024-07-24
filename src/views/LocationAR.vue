@@ -1,6 +1,6 @@
 <template>
   <div class="locationAR">
-    <h3>{{ range }}</h3>
+    <div class="range-text">{{ range }}</div>
 
     <a-scene ar vr-mode-ui="enabled: false">
       <a-entity
@@ -27,7 +27,7 @@ export default defineComponent({
       longitude: 0,
       modelContent: null,
       modelName: "",
-      range: "Hello AR",
+      range: "Hello! Are you ready to hunt?",
       isWithinRange: false,
     };
   },
@@ -41,7 +41,6 @@ export default defineComponent({
       this.longitude = this.$store.getters.mapLongitude;
       this.modelContent = this.$store.getters.placedModelFile;
       this.modelName = this.$store.getters.placedModelName;
-      console.log("charles", this.modelName);
     },
     watchUserPosition() {
       if (navigator.geolocation) {
@@ -96,6 +95,20 @@ export default defineComponent({
 });
 </script>
 <style scoped>
+.range-text {
+  position: absolute;
+  top: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.3);
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  z-index: 10;
+}
 a-scene {
   height: 100vh;
   width: 100vw;
