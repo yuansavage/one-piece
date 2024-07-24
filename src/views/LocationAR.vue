@@ -8,7 +8,7 @@
         :gltf-model="`./assets/model/${modelName}`"
         position="0 1 -3"
         scale="0.5 0.5 0.5"
-        visible="true"
+        :visible="isWithinRange"
       ></a-entity>
     </a-scene>
   </div>
