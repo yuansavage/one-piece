@@ -68,7 +68,7 @@ export default defineComponent({
           const model = gltf.scene;
           scene.add(model);
 
-          model.position.y = 0;
+          model.position.y = -1.5;
           model.position.x = 0;
           model.position.z = 0;
 
@@ -80,6 +80,8 @@ export default defineComponent({
             requestAnimationFrame(animate);
 
             model.position.y += direction * speed;
+            model.rotation.y += 0.01;
+
             if (model.position.y > limit || model.position.y < -limit) {
               direction *= -1;
             }

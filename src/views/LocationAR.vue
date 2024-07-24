@@ -6,7 +6,7 @@
       <a-entity
         id="model"
         :gltf-model="`./assets/model/${modelName}`"
-        position="0 0 -4"
+        position="0 2 -4"
         scale="0.5 0.5 0.5"
         :visible="isWithinRange"
       ></a-entity>
@@ -29,11 +29,15 @@ export default defineComponent({
       modelName: "",
       range: "Hello! Are you ready to hunt?",
       isWithinRange: false,
+      played: false,
+      sound: null,
     };
   },
   mounted() {
     this.extractDatafromUrl();
     this.watchUserPosition();
+    this.sound = new Audio(require("/public/assets/sound/correct.mp3"));
+    console.log(this.sound);
   },
   methods: {
     extractDatafromUrl() {
@@ -71,9 +75,14 @@ export default defineComponent({
       if (distance <= this.threshold) {
         this.range = "You are within the target range.";
         this.isWithinRange = true;
+        if (!this.played) {
+          this.sound.play();
+          this.played = true;
+        }
       } else {
         this.range = "You are outside the target range.";
         this.isWithinRange = false;
+        this.played = false;
       }
     },
     calculateDistance(lat1, lon1, lat2, lon2) {
