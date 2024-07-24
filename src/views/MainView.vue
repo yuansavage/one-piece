@@ -1,5 +1,5 @@
 <template>
-  <div id="mainView">
+  <div id="mainView" @click="playVideo">
     <div id="model-container"></div>
   </div>
 </template>
@@ -19,6 +19,11 @@ export default defineComponent({
     this.initThreeJS();
   },
   methods: {
+    playVideo() {
+      if (this.video) {
+        this.video.play();
+      }
+    },
     initThreeJS() {
       const scene = new THREE.Scene();
       const camera = new THREE.PerspectiveCamera(
@@ -36,11 +41,15 @@ export default defineComponent({
 
       // Create video element
       this.video = document.createElement("video");
-      this.video.src = "./assets/video/bg.mp4"; // Path to your video file
+      this.video.src = "./assets/video/bg.mp4";
       this.video.crossOrigin = "anonymous";
-      this.video.loop = true; // Make video loop
-      this.video.muted = true; // Optional: mute video
-      this.video.play(); // Start playing video
+      this.video.loop = true;
+      this.video.muted = true;
+      this.video.autoplay = true;
+      this.video.preload = true;
+      this.video.controls = true;
+      this.video.playsinline = true;
+      this.video.setAttribute("playsinline", "playsinline");
 
       // Create video texture
       const videoTexture = new THREE.VideoTexture(this.video);
