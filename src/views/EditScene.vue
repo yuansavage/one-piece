@@ -41,6 +41,10 @@ export default defineComponent({
                 coordinates.longitude,
                 coordinates.latitude
             );
+            this.$refs.map3dComponent.markLocation(
+                coordinates.longitude,
+                coordinates.latitude
+            );
             this.$refs.mapComponent.updateFileContent(fileContent);
         },
         async handleAdd({ addModel }) {

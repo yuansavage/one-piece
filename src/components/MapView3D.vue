@@ -28,9 +28,17 @@ export default {
             } catch (error) {
                 console.error("Failed to load OSM Buildings Tileset:", error);
             }
-            //   this.cesiumViewer.camera.flyTo({
-            //   destination: Cesium.Cartesian3.fromDegrees(-104.9965, 39.74248, 4000)
-            // });
+        },
+        markLocation(longitude, latitude) {
+            if (this.cesiumViewer) {
+                this.cesiumViewer.camera.flyTo({
+                    destination: Cesium.Cartesian3.fromDegrees(
+                        longitude,
+                        latitude,
+                        1000
+                    ),
+                });
+            }
         },
     },
 };
