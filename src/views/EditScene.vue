@@ -1,15 +1,24 @@
 <template>
     <div id="editScene">
-        <div id="view">
+        <div id="twod-info">
             <MenuBar id="menuBar" @submit="handleSubmit" @add="handleAdd" />
-            <CesiumView id="mapView3d" ref="map3dComponent" />
-        </div>
-        <div id="place">
             <MapView
                 id="mapView"
                 ref="mapComponent"
                 :shouldAddLayer="shouldAddLayer"
             />
+        </div>
+        <div id="threed-info">
+            <div class="map3d-data">
+                <CesiumView id="mapView3d" ref="map3dComponent" />
+            </div>
+            <div class="model-data">
+                <ModelView
+                    id="modelView"
+                    ref="modelViewComponent"
+                    :shouldAddLayer="shouldAddLayer"
+                />
+            </div>
         </div>
     </div>
 </template>
@@ -19,10 +28,11 @@ import { defineComponent } from "vue";
 import MapView from "../components/MapView.vue";
 import MenuBar from "../components/MenuBar.vue";
 import CesiumView from "../components/MapView3D.vue";
+import ModelView from "../components/ModelView.vue";
 
 export default defineComponent({
     name: "EditScene",
-    components: { MapView, CesiumView, MenuBar },
+    components: { MapView, CesiumView, ModelView, MenuBar },
     data() {
         return {
             uploadedFileContent: "",
@@ -70,16 +80,27 @@ export default defineComponent({
 <style>
 #editScene {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     height: 100vh;
 }
-#view {
+#twod-info {
+    width: 60%;
     display: flex;
-    flex-direction: row;
-    height: 30vh;
+    flex-direction: column;
 }
 #menuBar {
-    width: 40%;
     padding: 20px;
+}
+#threed-info {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+}
+.map3d-data {
+    height: 60%;
+}
+.model-data {
+    border: 5px solid greenyellow; /* Black solid border */
+    border-radius: 10px; /* Optional: Rounded corners */
 }
 </style>
